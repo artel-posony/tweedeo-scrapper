@@ -32,22 +32,22 @@ export const scrapper = async () => {
 
     const usernameWithoutAt = username.substring(1);
 
-    const verified = !!document.querySelector('[data-testid="tweet"] [data-testid="icon-verified"]');
+    const verified = !!tweet.querySelector('[data-testid="icon-verified"]');
 
-    const tweetTextElem = document.querySelector<HTMLElement>('[data-testid="tweet"] [data-testid="tweetText"]');
+    const tweetTextElem = tweet.querySelector<HTMLElement>('[data-testid="tweetText"]');
     const text = tweetTextElem?.innerText;
 
-    const timeElem = document.querySelector<HTMLElement>('[data-testid="tweet"] time');
+    const timeElem = tweet.querySelector<HTMLElement>('time');
     const datetime = timeElem?.getAttribute('datetime');
 
-    const avatarSelector = '[data-testid="tweet"] [data-testid="UserAvatar-Container-' + usernameWithoutAt + '"] img';
+    const avatarSelector = '[data-testid="UserAvatar-Container-' + usernameWithoutAt + '"] img';
 
     await waitForElm(avatarSelector);
 
-    const avatarImg = document.querySelector<HTMLImageElement>(avatarSelector);
+    const avatarImg = tweet.querySelector<HTMLImageElement>(avatarSelector);
     const avatar = avatarImg?.src;
 
-    const tweetPhotoElem = document.querySelector<HTMLImageElement>('[data-testid="tweet"] [data-testid="tweetPhoto"] img');
+    const tweetPhotoElem = tweet.querySelector<HTMLImageElement>('[data-testid="tweetPhoto"] img');
     const tweetPhoto = !!tweetPhotoElem ? tweetPhotoElem.src : undefined;
 
     const data = {

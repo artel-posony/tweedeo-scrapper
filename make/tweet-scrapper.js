@@ -19,8 +19,13 @@
         });
     }
     await waitForElm('[data-testid="tweet"]');
-    const userNameElem = document.querySelector('[data-testid="tweet"] [data-testid="User-Name"]');
-    const [name, username] = ((userNameElem === null || userNameElem === void 0 ? void 0 : userNameElem.innerText) || '').split(/\\r?\\n/).filter((i) => !!i);
+    // Берется самый первый твит, хотя на странице их много
+    const tweet = document.querySelector('[data-testid="tweet"]');
+    if (!tweet) {
+        throw new Error('Tweet not found!');
+    }
+    const userNameElems = tweet.querySelectorAll('[data-testid="User-Name"] a');
+    const [name, username] = [...userNameElems].map((elem) => elem.innerText);
     const usernameWithoutAt = username.substring(1);
     const verified = !!document.querySelector('[data-testid="tweet"] [data-testid="icon-verified"]');
     const tweetTextElem = document.querySelector('[data-testid="tweet"] [data-testid="tweetText"]');
