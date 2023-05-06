@@ -15,7 +15,8 @@
         "resolveJsonModule": true,
         "isolatedModules": false,
         "noFallthroughCasesInSwitch": true,
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "removeComments": true
     },
     "compileOnSave": true,
     "include": [
