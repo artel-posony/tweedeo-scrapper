@@ -17,7 +17,7 @@
         document.readyState === 'complete' ||
         (document.readyState !== 'loading' && !document.documentElement.doScroll)
     ) {
-        callback();
+        onReady();
     } else {
         document.addEventListener('DOMContentLoaded', onReady);
     }
