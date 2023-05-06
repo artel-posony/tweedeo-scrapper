@@ -1,6 +1,7 @@
 
 (function() {
     const scrapper = async () => {
+    var _a;
     function waitForElm(selector) {
         return new Promise(resolve => {
             if (document.querySelector(selector)) {
@@ -18,17 +19,27 @@
             });
         });
     }
+    function parseTextWithEmoji(collection) {
+        return [...collection || []].map((elem) => {
+            if (elem.tagName.toUpperCase() === 'IMG') {
+                return elem.getAttribute('alt');
+            }
+            return elem.textContent || '';
+        }).join('');
+    }
     await waitForElm('[data-testid="tweet"]');
     const tweet = document.querySelector('[data-testid="tweet"]');
     if (!tweet) {
         throw new Error('Tweet not found!');
     }
     const userUserNameElems = tweet.querySelectorAll('[data-testid="User-Name"] a');
-    const [name, username] = [...userUserNameElems].map((elem) => elem.innerText);
+    const [nameElem, usernameElem] = [...userUserNameElems].map((elem) => elem);
+    const name = parseTextWithEmoji((_a = nameElem === null || nameElem === void 0 ? void 0 : nameElem.querySelector('div > div > span')) === null || _a === void 0 ? void 0 : _a.children);
+    const username = usernameElem.textContent || '';
     const usernameWithoutAt = username.substring(1);
     const verified = !!tweet.querySelector('[data-testid="icon-verified"]');
     const tweetTextElem = tweet.querySelector('[data-testid="tweetText"]');
-    const text = tweetTextElem === null || tweetTextElem === void 0 ? void 0 : tweetTextElem.innerText;
+    const text = parseTextWithEmoji(tweetTextElem === null || tweetTextElem === void 0 ? void 0 : tweetTextElem.children);
     const timeElem = tweet.querySelector('time');
     const datetime = timeElem === null || timeElem === void 0 ? void 0 : timeElem.getAttribute('datetime');
     const avatarSelector = '[data-testid="UserAvatar-Container-' + usernameWithoutAt + '"] img';

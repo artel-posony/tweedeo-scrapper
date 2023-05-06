@@ -19,6 +19,16 @@ export const scrapper = async () => {
         });
     }
 
+    function parseTextWithEmoji(collection: HTMLCollection | undefined) {
+        return [...collection || []].map((elem) => {
+            if (elem.tagName.toUpperCase() === 'IMG') {
+                return elem.getAttribute('alt');
+            }
+    
+            return elem.textContent || '';
+        }).join('');
+    }
+
     await waitForElm('[data-testid="tweet"]');
     // Берется самый первый твит, хотя на странице их много
     const tweet = document.querySelector<HTMLElement>('[data-testid="tweet"]');
@@ -28,14 +38,17 @@ export const scrapper = async () => {
     }
 
     const userUserNameElems = tweet.querySelectorAll<HTMLElement>('[data-testid="User-Name"] a');
-    const [name, username] = [...userUserNameElems].map((elem) => elem.innerText);
+    const [nameElem, usernameElem] = [...userUserNameElems].map((elem) => elem);
 
+    const name = parseTextWithEmoji(nameElem?.querySelector('div > div > span')?.children);
+
+    const username = usernameElem.textContent || '';
     const usernameWithoutAt = username.substring(1);
 
     const verified = !!tweet.querySelector('[data-testid="icon-verified"]');
 
     const tweetTextElem = tweet.querySelector<HTMLElement>('[data-testid="tweetText"]');
-    const text = tweetTextElem?.innerText;
+    const text = parseTextWithEmoji(tweetTextElem?.children);
 
     const timeElem = tweet.querySelector<HTMLElement>('time');
     const datetime = timeElem?.getAttribute('datetime');
