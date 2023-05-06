@@ -38,7 +38,7 @@ export const scrapper = async () => {
     }
 
     const userUserNameElems = tweet.querySelectorAll<HTMLElement>('[data-testid="User-Name"] a');
-    const [nameElem, usernameElem] = [...userUserNameElems].map((elem) => elem);
+    const [nameElem, usernameElem] = [...userUserNameElems];
 
     const name = parseTextWithEmoji(nameElem?.querySelector('div > div > span')?.children);
 

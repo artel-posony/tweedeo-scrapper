@@ -33,7 +33,7 @@
         throw new Error('Tweet not found!');
     }
     const userUserNameElems = tweet.querySelectorAll('[data-testid="User-Name"] a');
-    const [nameElem, usernameElem] = [...userUserNameElems].map((elem) => elem);
+    const [nameElem, usernameElem] = [...userUserNameElems];
     const name = parseTextWithEmoji((_a = nameElem === null || nameElem === void 0 ? void 0 : nameElem.querySelector('div > div > span')) === null || _a === void 0 ? void 0 : _a.children);
     const username = usernameElem.textContent || '';
     const usernameWithoutAt = username.substring(1);
