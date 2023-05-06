@@ -23,8 +23,8 @@
     if (!tweet) {
         throw new Error('Tweet not found!');
     }
-    const userNameElems = tweet.querySelectorAll('[data-testid="User-Name"] a');
-    const [name, username] = [...userNameElems].map((elem) => elem.innerText);
+    const userUserNameElems = tweet.querySelectorAll('[data-testid="User-Name"] a');
+    const [name, username] = [...userUserNameElems].map((elem) => elem.innerText);
     const usernameWithoutAt = username.substring(1);
     const verified = !!tweet.querySelector('[data-testid="icon-verified"]');
     const tweetTextElem = tweet.querySelector('[data-testid="tweetText"]');
