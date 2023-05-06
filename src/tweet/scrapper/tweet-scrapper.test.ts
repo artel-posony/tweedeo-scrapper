@@ -7,6 +7,8 @@ const {scrapper} = jest.requireActual<typeof Scrapper>('./index');
 
 import {simple1} from './__mocks__/simple1';
 import {simple2} from './__mocks__/simple2';
+import {simple3} from './__mocks__/simple3';
+import {simple4} from './__mocks__/simple4';
 
 describe('Tweet Scrapper', () => {
     beforeEach(() => {
@@ -44,6 +46,40 @@ describe('Tweet Scrapper', () => {
             "text": "Kotlin – это Java 2020. Kotlin не решает никаких фундаментальных проблем, которые не были решены в Java. Да, по сравнению с Java 8 это прорыв. Но если вы не в курсе, то сейчас актуальная версия — Java 20.",
             "tweetPhoto": undefined,
             "username": "@zapolnoch",
+            "verified": true
+        });
+    });
+
+    // Только эмоджи в тексте, картинка, не верифиц
+    it('https://twitter.com/DonaldAkron/status/1653248206246133761?s=20', async () => {
+        document.body.innerHTML = simple3;
+
+        const data = await scrapper();
+
+        expect(data).toEqual({
+            "avatar": "https://pbs.twimg.com/profile_images/1471554482471268360/7ioKFmeq_x96.jpg",
+            "datetime": "2023-05-02T04:01:02.000Z",
+            "name": "Akron",
+            "text": "🏛️🏛️🏛️",
+            "tweetPhoto": "https://pbs.twimg.com/media/FvGEewGakAEscy_?format=jpg&name=large",
+            "username": "@DonaldAkron",
+            "verified": false
+        });
+    });
+
+    // Пустой текст, картинка, верифиц
+    it('https://twitter.com/Genshinmem/status/1645314389862498305?s=20', async () => {
+        document.body.innerHTML = simple4;
+
+        const data = await scrapper();
+
+        expect(data).toEqual({
+            "avatar": "https://pbs.twimg.com/profile_images/1579544825954697234/UZNjvpZW_x96.jpg",
+            "datetime": "2023-04-10T06:34:53.000Z",
+            "name": "Genshin Impact Memes",
+            "text": "",
+            "tweetPhoto": "https://pbs.twimg.com/media/FtVUqCZXwAAUSgh?format=jpg&name=medium",
+            "username": "@Genshinmem",
             "verified": true
         });
     });
