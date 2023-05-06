@@ -19,7 +19,6 @@
         });
     }
     await waitForElm('[data-testid="tweet"]');
-    // Берется самый первый твит, хотя на странице их много
     const tweet = document.querySelector('[data-testid="tweet"]');
     if (!tweet) {
         throw new Error('Tweet not found!');
