@@ -27,6 +27,7 @@ export const scrapper = async () => {
         throw new Error('Tweet not found!');
     }
 
+    
     const userNameElems = tweet.querySelectorAll<HTMLElement>('[data-testid="User-Name"] a');
     const [name, username] = [...userNameElems].map((elem) => elem.innerText);
 
