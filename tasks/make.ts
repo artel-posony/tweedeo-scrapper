@@ -18,9 +18,18 @@ const injectedJsTemplate = (scrapperContent: string) => `
     async function onReady() {
         try {
             const data = await scrapper();
-            window.ReactNativeWebView.postMessage(JSON.stringify(data));
+
+            if (window.ReactNativeWebView) {
+                window.ReactNativeWebView.postMessage(JSON.stringify(data));
+            } else {
+                console.log(data);
+            }
         } catch (error) {
-            window.ReactNativeWebView.postMessage(JSON.stringify({error}));
+            if (window.ReactNativeWebView) {
+                window.ReactNativeWebView.postMessage(JSON.stringify({error}));
+            } else {
+                console.log(error);
+            }
         }
     };
 
