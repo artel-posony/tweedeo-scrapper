@@ -20,9 +20,15 @@ export const scrapper = async () => {
     }
 
     await waitForElm('[data-testid="tweet"]');
-    
-    const userNameElem = document.querySelector<HTMLElement>('[data-testid="tweet"] [data-testid="User-Name"]');
-    const [name, username] = (userNameElem?.innerText || '').split(/\\r?\\n/).filter((i) => !!i);
+    // Берется самый первый твит, хотя на странице их много
+    const tweet = document.querySelector<HTMLElement>('[data-testid="tweet"]');
+
+    if (!tweet) {
+        throw new Error('Tweet not found!');
+    }
+
+    const userNameElems = tweet.querySelectorAll<HTMLElement>('[data-testid="User-Name"] a');
+    const [name, username] = [...userNameElems].map((elem) => elem.innerText);
 
     const usernameWithoutAt = username.substring(1);
 
