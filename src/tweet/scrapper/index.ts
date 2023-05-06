@@ -29,38 +29,48 @@ export const scrapper = async () => {
         }).join('');
     }
 
-    await waitForElm('[data-testid="tweet"]');
+    const selectors = {
+        tweet: '[data-testid="tweet"]',
+        userLinks: '[data-testid="User-Name"] a',
+        userName: 'div > div > span',
+        verified: '[data-testid="icon-verified"]',
+        text: '[data-testid="tweetText"]',
+        time: 'time',
+        photo: '[data-testid="tweetPhoto"] img',
+        avatar: (usernameWithoutAt: string) => `[data-testid="UserAvatar-Container-${usernameWithoutAt}"] img`,
+    };
+
+    await waitForElm(selectors.tweet);
     // Берется самый первый твит, хотя на странице их много
-    const tweet = document.querySelector<HTMLElement>('[data-testid="tweet"]');
+    const tweet = document.querySelector<HTMLElement>(selectors.tweet);
 
     if (!tweet) {
         throw new Error('Tweet not found!');
     }
 
-    const userUserNameElems = tweet.querySelectorAll<HTMLElement>('[data-testid="User-Name"] a');
+    const userUserNameElems = tweet.querySelectorAll<HTMLElement>(selectors.userLinks);
     const [nameElem, usernameElem] = [...userUserNameElems];
 
-    const name = parseTextWithEmoji(nameElem?.querySelector('div > div > span')?.children);
+    const name = parseTextWithEmoji(nameElem?.querySelector(selectors.userName)?.children);
 
     const username = usernameElem.textContent || '';
     const usernameWithoutAt = username.substring(1);
+    const avatarSelector = selectors.avatar(usernameWithoutAt);
 
-    const verified = !!tweet.querySelector('[data-testid="icon-verified"]');
+    const verified = !!tweet.querySelector(selectors.verified);
 
-    const tweetTextElem = tweet.querySelector<HTMLElement>('[data-testid="tweetText"]');
+    const tweetTextElem = tweet.querySelector<HTMLElement>(selectors.text);
     const text = parseTextWithEmoji(tweetTextElem?.children);
 
-    const timeElem = tweet.querySelector<HTMLElement>('time');
+    const timeElem = tweet.querySelector<HTMLElement>(selectors.time);
     const datetime = timeElem?.getAttribute('datetime');
 
-    const avatarSelector = '[data-testid="UserAvatar-Container-' + usernameWithoutAt + '"] img';
-
-    await waitForElm(avatarSelector);
+    await waitForElm(`${selectors.tweet} ${avatarSelector}`);
 
     const avatarImg = tweet.querySelector<HTMLImageElement>(avatarSelector);
     const avatar = avatarImg?.src;
 
-    const tweetPhotoElem = tweet.querySelector<HTMLImageElement>('[data-testid="tweetPhoto"] img');
+    const tweetPhotoElem = tweet.querySelector<HTMLImageElement>(selectors.photo);
     const tweetPhoto = !!tweetPhotoElem ? tweetPhotoElem.src : undefined;
 
     const data = {

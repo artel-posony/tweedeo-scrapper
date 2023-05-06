@@ -27,26 +27,36 @@
             return elem.textContent || '';
         }).join('');
     }
-    await waitForElm('[data-testid="tweet"]');
-    const tweet = document.querySelector('[data-testid="tweet"]');
+    const selectors = {
+        tweet: '[data-testid="tweet"]',
+        userLinks: '[data-testid="User-Name"] a',
+        userName: 'div > div > span',
+        verified: '[data-testid="icon-verified"]',
+        text: '[data-testid="tweetText"]',
+        time: 'time',
+        photo: '[data-testid="tweetPhoto"] img',
+        avatar: (usernameWithoutAt) => `[data-testid="UserAvatar-Container-${usernameWithoutAt}"] img`,
+    };
+    await waitForElm(selectors.tweet);
+    const tweet = document.querySelector(selectors.tweet);
     if (!tweet) {
         throw new Error('Tweet not found!');
     }
-    const userUserNameElems = tweet.querySelectorAll('[data-testid="User-Name"] a');
+    const userUserNameElems = tweet.querySelectorAll(selectors.userLinks);
     const [nameElem, usernameElem] = [...userUserNameElems];
-    const name = parseTextWithEmoji((_a = nameElem === null || nameElem === void 0 ? void 0 : nameElem.querySelector('div > div > span')) === null || _a === void 0 ? void 0 : _a.children);
+    const name = parseTextWithEmoji((_a = nameElem === null || nameElem === void 0 ? void 0 : nameElem.querySelector(selectors.userName)) === null || _a === void 0 ? void 0 : _a.children);
     const username = usernameElem.textContent || '';
     const usernameWithoutAt = username.substring(1);
-    const verified = !!tweet.querySelector('[data-testid="icon-verified"]');
-    const tweetTextElem = tweet.querySelector('[data-testid="tweetText"]');
+    const avatarSelector = selectors.avatar(usernameWithoutAt);
+    const verified = !!tweet.querySelector(selectors.verified);
+    const tweetTextElem = tweet.querySelector(selectors.text);
     const text = parseTextWithEmoji(tweetTextElem === null || tweetTextElem === void 0 ? void 0 : tweetTextElem.children);
-    const timeElem = tweet.querySelector('time');
+    const timeElem = tweet.querySelector(selectors.time);
     const datetime = timeElem === null || timeElem === void 0 ? void 0 : timeElem.getAttribute('datetime');
-    const avatarSelector = '[data-testid="UserAvatar-Container-' + usernameWithoutAt + '"] img';
-    await waitForElm(avatarSelector);
+    await waitForElm(`${selectors.tweet} ${avatarSelector}`);
     const avatarImg = tweet.querySelector(avatarSelector);
     const avatar = avatarImg === null || avatarImg === void 0 ? void 0 : avatarImg.src;
-    const tweetPhotoElem = tweet.querySelector('[data-testid="tweetPhoto"] img');
+    const tweetPhotoElem = tweet.querySelector(selectors.photo);
     const tweetPhoto = !!tweetPhotoElem ? tweetPhotoElem.src : undefined;
     const data = {
         name,
