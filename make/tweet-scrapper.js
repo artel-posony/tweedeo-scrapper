@@ -57,7 +57,20 @@
     const avatarImg = tweet.querySelector(avatarSelector);
     const avatar = avatarImg === null || avatarImg === void 0 ? void 0 : avatarImg.src;
     const tweetPhotoElems = tweet.querySelectorAll(selectors.photo);
-    const tweetPhotos = [...tweetPhotoElems].map((img) => img.src);
+    const tweetPhotos = [...tweetPhotoElems].map((img) => {
+        const { height, width } = img.getBoundingClientRect();
+        let orientation = '';
+        if (height > width) {
+            orientation = 'portrait';
+        }
+        if (width > height) {
+            orientation = 'landscape';
+        }
+        return {
+            orientation,
+            src: img.src
+        };
+    });
     const data = {
         name,
         username,

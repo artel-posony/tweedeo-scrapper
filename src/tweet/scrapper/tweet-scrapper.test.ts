@@ -63,7 +63,12 @@ describe('Tweet Scrapper', () => {
             "datetime": "2023-05-02T04:01:02.000Z",
             "name": "Akron",
             "text": "🏛️🏛️🏛️",
-            "tweetPhotos":["https://pbs.twimg.com/media/FvGEewGakAEscy_?format=jpg&name=large"],
+            "tweetPhotos":[
+                {
+                    "orientation": "",
+                    "src": "https://pbs.twimg.com/media/FvGEewGakAEscy_?format=jpg&name=large"
+                }
+            ],
             "username": "@DonaldAkron",
             "verified": false
         });
@@ -80,7 +85,12 @@ describe('Tweet Scrapper', () => {
             "datetime": "2023-04-10T06:34:53.000Z",
             "name": "Genshin Impact Memes",
             "text": "",
-            "tweetPhotos": ["https://pbs.twimg.com/media/FtVUqCZXwAAUSgh?format=jpg&name=medium"],
+            "tweetPhotos": [
+                {
+                    "orientation": "",
+                    "src": "https://pbs.twimg.com/media/FtVUqCZXwAAUSgh?format=jpg&name=medium"
+                }
+            ],
             "username": "@Genshinmem",
             "verified": true
         });
@@ -146,8 +156,14 @@ Then I fall asleep happily 😉`,
             "name": "Mlamineu🇸🇳",
             "text": "📍Ziguinchor : toutes les issues qui mènent chez Ousmane SONKO sont barricadées par les… ziguinchorois sur des kilomètres.\n#FreeSenegal 🇸🇳",
             "tweetPhotos": [
-                "https://pbs.twimg.com/media/FwJwUulWIAAVAl9?format=jpg&name=900x900",
-                "https://pbs.twimg.com/media/FwJwUumXsAAS2_f?format=jpg&name=900x900"
+                {
+                    "orientation": "",
+                    "src": "https://pbs.twimg.com/media/FwJwUulWIAAVAl9?format=jpg&name=900x900",
+                },
+                {
+                    "orientation": "",
+                    "src": "https://pbs.twimg.com/media/FwJwUumXsAAS2_f?format=jpg&name=900x900"
+                }
             ],
             "username": "@MlamineuDiop",
             "verified": false

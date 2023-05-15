@@ -71,7 +71,24 @@ export const scrapper = async () => {
     const avatar = avatarImg?.src;
 
     const tweetPhotoElems = tweet.querySelectorAll<HTMLImageElement>(selectors.photo);
-    const tweetPhotos = [...tweetPhotoElems].map((img) => img.src);
+    const tweetPhotos = [...tweetPhotoElems].map((img) => {
+        const {height, width} = img.getBoundingClientRect();
+
+        let orientation = '';
+        
+        if (height > width) {
+            orientation = 'portrait';
+        }
+
+        if (width > height) {
+            orientation = 'landscape';
+        }
+
+        return {
+            orientation,
+            src: img.src
+        }
+    });
 
     const data = {
         name,
