@@ -70,8 +70,8 @@ export const scrapper = async () => {
     const avatarImg = tweet.querySelector<HTMLImageElement>(avatarSelector);
     const avatar = avatarImg?.src;
 
-    const tweetPhotoElem = tweet.querySelector<HTMLImageElement>(selectors.photo);
-    const tweetPhoto = !!tweetPhotoElem ? tweetPhotoElem.src : undefined;
+    const tweetPhotoElems = tweet.querySelectorAll<HTMLImageElement>(selectors.photo);
+    const tweetPhotos = [...tweetPhotoElems].map((img) => img.src);
 
     const data = {
         name,
@@ -80,7 +80,7 @@ export const scrapper = async () => {
         text,
         datetime,
         avatar,
-        tweetPhoto
+        tweetPhotos
     };
 
     return data;

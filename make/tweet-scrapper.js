@@ -56,8 +56,8 @@
     await waitForElm(`${selectors.tweet} ${avatarSelector}`);
     const avatarImg = tweet.querySelector(avatarSelector);
     const avatar = avatarImg === null || avatarImg === void 0 ? void 0 : avatarImg.src;
-    const tweetPhotoElem = tweet.querySelector(selectors.photo);
-    const tweetPhoto = !!tweetPhotoElem ? tweetPhotoElem.src : undefined;
+    const tweetPhotoElems = tweet.querySelectorAll(selectors.photo);
+    const tweetPhotos = [...tweetPhotoElems].map((img) => img.src);
     const data = {
         name,
         username,
@@ -65,7 +65,7 @@
         text,
         datetime,
         avatar,
-        tweetPhoto
+        tweetPhotos
     };
     return data;
 };
