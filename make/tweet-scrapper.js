@@ -2,6 +2,13 @@
 (function() {
     const scrapper = async () => {
     var _a;
+    function waitOneSecond() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve('');
+            }, 1000);
+        });
+    }
     function waitForElm(selector) {
         return new Promise(resolve => {
             if (document.querySelector(selector)) {
@@ -13,6 +20,12 @@
                     observer.disconnect();
                 }
             });
+            setTimeout(() => {
+                if (observer && observer.disconnect) {
+                    observer.disconnect();
+                }
+                resolve('');
+            }, 3000);
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
@@ -56,6 +69,8 @@
     await waitForElm(`${selectors.tweet} ${avatarSelector}`);
     const avatarImg = tweet.querySelector(avatarSelector);
     const avatar = avatarImg === null || avatarImg === void 0 ? void 0 : avatarImg.src;
+    await waitForElm(`${selectors.tweet} ${selectors.photo}`);
+    await waitOneSecond();
     const tweetPhotoElems = tweet.querySelectorAll(selectors.photo);
     const tweetPhotos = [...tweetPhotoElems].map((img) => {
         const { height, width } = img.getBoundingClientRect();

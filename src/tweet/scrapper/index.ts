@@ -1,17 +1,32 @@
 export const scrapper = async () => {
+    function waitOneSecond() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve('');
+            }, 1000);
+        });
+    }
+
     function waitForElm(selector: string) {
         return new Promise(resolve => {
             if (document.querySelector(selector)) {
                 return resolve(document.querySelector(selector));
             }
-    
+
             const observer = new MutationObserver(mutations => {
                 if (document.querySelector(selector)) {
                     resolve(document.querySelector(selector));
                     observer.disconnect();
                 }
             });
-    
+
+            setTimeout(() => {
+                if (observer && observer.disconnect) {
+                    observer.disconnect();
+                }
+                resolve('');
+            }, 3000);
+
             observer.observe(document.body, {
                 childList: true,
                 subtree: true
@@ -24,7 +39,7 @@ export const scrapper = async () => {
             if (elem.tagName.toUpperCase() === 'IMG') {
                 return elem.getAttribute('alt');
             }
-    
+
             return elem.textContent || '';
         }).join('');
     }
@@ -70,12 +85,14 @@ export const scrapper = async () => {
     const avatarImg = tweet.querySelector<HTMLImageElement>(avatarSelector);
     const avatar = avatarImg?.src;
 
+    await waitForElm(`${selectors.tweet} ${selectors.photo}`);
+    await waitOneSecond();
     const tweetPhotoElems = tweet.querySelectorAll<HTMLImageElement>(selectors.photo);
     const tweetPhotos = [...tweetPhotoElems].map((img) => {
         const {height, width} = img.getBoundingClientRect();
 
         let orientation = '';
-        
+
         if (height > width) {
             orientation = 'portrait';
         }
