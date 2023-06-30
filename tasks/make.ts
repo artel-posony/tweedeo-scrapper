@@ -55,5 +55,6 @@ const createInjectedJsFile = (scrapperName: string) => {
     fs.writeFileSync(path.resolve(MAKE, `${scrapperName}-scrapper.js`), content);
 };
 
+createInjectedJsFile('tweet-embed-first');
 createInjectedJsFile('tweet');
 createInjectedJsFile('tg');
